@@ -67,3 +67,11 @@ export const products: Product[] = [
 ]
 
 export const getProduct = (id: string) => products.find((product) => product.id === id)
+
+// 点单页顶部推荐菜轮播的运营精选清单：锅底、招牌肉品、海鲜、主食与饮品各取代表，
+// 与「推荐」分类（展示全部菜品）解耦，便于后续按门店/时段调整推荐位。
+export const recommendedProductIds = ['p1', 'p3', 'p5', 'p2', 'p10']
+
+export const recommendedProducts: Product[] = recommendedProductIds
+  .map((id) => products.find((product) => product.id === id))
+  .filter((product): product is Product => Boolean(product))

@@ -26,11 +26,13 @@ src/
 ├── data/menu.ts           # 菜品/分类/桌台静态数据
 ├── hooks/useElderlyMode.ts# 老人模式：localStorage + html.elderly
 ├── hooks/useViewRoute.ts  # 视图 ↔ URL hash 双向同步（含深链接/非法地址纠正）
+├── hooks/usePrefersReducedMotion.ts # 系统「减少动态效果」偏好，供轮播等动效降级
 ├── lib/utils.ts           # cn（类名合并）、money（¥ 格式化）
-├── components/            # 页面组件（HomeView/WelcomeView/MenuView/OrderView/CheckoutView 对应各视图）；通用件在 components/ui/（button、dialog）
+├── components/            # 页面组件（HomeView/WelcomeView/MenuView/OrderView/CheckoutView 对应各视图）；点单页推荐轮播在 RecommendCarousel.tsx；通用件在 components/ui/（button、dialog）
 └── assets/                # hotpot/broth/beef/vegetables 图片
 e2e/super-spicy.spec.ts    # 超级辣风险提示 E2E 验收
 e2e/view-routing.spec.ts   # 视图 URL hash 路由 E2E 验收
+e2e/recommend-carousel.spec.ts # 点单页推荐菜轮播 E2E 验收
 index.html                 # 入口，含初始化语言的内联脚本
 tailwind.config.js         # 自定义色板；vite.config.ts 配 base './' 与 @ 别名
 playwright.config.ts       # E2E 配置
@@ -59,6 +61,7 @@ playwright.config.ts       # E2E 配置
 - 样式只用 Tailwind 类名，不用 CSS Modules / styled-components。
 - 新增 i18n 文案在 `src/i18n.ts` 的 zh/en 两处同步添加，按功能分组（`common.`、`menu.`、`cart.`、`order.` 等）。
 - 新增 `localStorage` 持久化一律 `try/catch` 包裹，不可用时降级内存态；现有 key：`i18nextLng`、`elderly-mode`（`true`/`false`）。
+- 自动播放/轮播类组件必须提供暂停能力，并在 `prefers-reduced-motion: reduce` 与老人模式下降速或停用自动播放（参考 `RecommendCarousel`）。
 - 需要在 React 挂载前设置 html 属性/class 时，扩展 `index.html` 的内联脚本。
 - npm 源默认走 `https://registry.npmmirror.com`（见根目录与 `server/.npmrc`）。
 

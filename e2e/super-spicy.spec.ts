@@ -90,10 +90,10 @@ test.describe('超级辣锅底选项 - E2E 验收测试', () => {
     // Click 超级辣
     await page.getByRole('button', { name: '超级辣' }).click()
     await expect(page.getByText('风险提示')).toBeVisible()
-    // Click the risk warning overlay (last data-state=open overlay = risk warning's overlay)
-    // Use force:true to bypass actionability checks since overlay intercepts events by design
+    // 风险提示弹窗的遮罩就是点击目标（最上层 overlay），用常规 click 让 Playwright
+    // 等待弹窗层级注册稳定；force 会跳过稳定性等待，可能让下层菜品弹窗也收到外部点击而一起关闭
     const overlay = page.locator('[data-state="open"][aria-hidden="true"]').last()
-    await overlay.click({ force: true, position: { x: 5, y: 5 } })
+    await overlay.click({ position: { x: 5, y: 5 } })
     // Dialog closed
     await expect(page.getByText('风险提示')).not.toBeVisible()
     // 微辣 still selected, 超级辣 not selected
